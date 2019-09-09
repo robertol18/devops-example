@@ -1,0 +1,27 @@
+version: '3'
+services:
+  jenkins:
+    container_name: jenkins
+    hostname: jenkins.example.com
+    ports:
+      - "8080:8080"
+      - "5000:5000"
+    volumes:
+      - "jenkins_home:/var/jenkins_home"
+    image: jenkins/jenkins:lts
+    # docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+  gitlab:
+    container_name: git-server
+    hostname: gitlab.example.com
+    ports:
+      - "443:443"
+      - "80:80"
+      - "22:22"
+    restart: always 
+    volumes:
+      - "/srv/gitlab/config:/etc/gitlab"
+      - "/srv/gitlab/logs:/var/log/gitlab"
+      - "/srv/gitlab/data:/var/opt/gitlab"
+    image: gitlab/gitlab-ce:latest 
+    networks:
+      - net1
